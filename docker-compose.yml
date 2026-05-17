@@ -1,0 +1,20 @@
+services:
+  agent-memory-hub:
+    build: .
+    container_name: agent-memory-hub
+    ports:
+      - "3000:3000"
+    volumes:
+      - memory-data:/data
+    environment:
+      - PORT=3000
+      - DB_PATH=/data/memory.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  memory-data:

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.db
+*.db-journal
+test-api.db
+.env
+.env.local
+coverage/
+.DS_Store
+*.log
