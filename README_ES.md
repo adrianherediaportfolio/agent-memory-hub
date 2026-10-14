@@ -187,7 +187,7 @@ Accept: application/json
 
 ## Stack Tecnologico
 
-- **Runtime**: Node.js 18+
+- **Runtime**: Node.js 20.12+
 - **Lenguaje**: TypeScript 5.6
 - **Framework**: Express.js
 - **Base de datos**: SQLite (via better-sqlite3)

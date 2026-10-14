@@ -218,7 +218,7 @@ Agent Memory Hub exposes a standard REST API that can be wrapped as an MCP serve
 
 ## Tech Stack
 
-- **Runtime**: Node.js 18+
+- **Runtime**: Node.js 20.12+
 - **Language**: TypeScript 5.6
 - **Framework**: Express.js
 - **Database**: SQLite (via better-sqlite3)
