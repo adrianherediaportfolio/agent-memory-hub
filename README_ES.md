@@ -4,7 +4,7 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)
-![Licencia](https://img.shields.io/badge/Licencia-MIT-yellow)
+![Licencia](https://img.shields.io/badge/Licencia-Propietaria-red)
 ![Version](https://img.shields.io/badge/Version-1.0.0-orange)
 
 ## Descripcion General
@@ -31,8 +31,6 @@ Agent Memory Hub es una API REST ligera que proporciona **memoria persistente** 
 
 ## Capturas de Pantalla
 
-### Health Check y Respuesta de API
-![Health Check API](https://app.devin.ai/attachments/d02bccf6-e4f5-432e-819c-877fddaaafea/screenshot_2953a721fe8c41fab315f76951843de4.png)
 
 ### Ejemplo de Busqueda (curl)
 
@@ -189,7 +187,7 @@ Accept: application/json
 
 ## Stack Tecnologico
 
-- **Runtime**: Node.js 18+
+- **Runtime**: Node.js 20.12+
 - **Lenguaje**: TypeScript 5.6
 - **Framework**: Express.js
 - **Base de datos**: SQLite (via better-sqlite3)
@@ -200,4 +198,9 @@ Accept: application/json
 
 ## Licencia
 
-MIT
+Copyright (c) 2026 Adrian Heredia Jimenez. Todos los derechos reservados.
+
+Software propietario. El código es público para que puedas verlo, pero no puedes usarlo, copiarlo, modificarlo ni distribuirlo sin mi permiso por escrito. Consulta [LICENSE](LICENSE).
+
+¿Quieres usarlo o comprar una licencia? Escríbeme a adrian.heredia.jimenez@gmail.com.
+
