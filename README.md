@@ -4,7 +4,7 @@
 
 ![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+![License](https://img.shields.io/badge/License-Proprietary-red)
 ![Version](https://img.shields.io/badge/Version-1.0.0-orange)
 
 ## Overview
@@ -31,8 +31,6 @@ Agent Memory Hub is a lightweight REST API that provides **persistent memory** f
 
 ## Screenshots
 
-### Health Check & API Response
-![Health Check API](https://app.devin.ai/attachments/d02bccf6-e4f5-432e-819c-877fddaaafea/screenshot_2953a721fe8c41fab315f76951843de4.png)
 
 ### Search Example (curl)
 
@@ -231,4 +229,9 @@ Agent Memory Hub exposes a standard REST API that can be wrapped as an MCP serve
 
 ## License
 
-MIT
+Copyright (c) 2026 Adrian Heredia Jimenez. All rights reserved.
+
+This is proprietary software. The code is public so you can see it, but you can't use, copy, modify or distribute it without my written permission. See [LICENSE](LICENSE).
+
+Want to use it or buy a license? Write to adrian.heredia.jimenez@gmail.com.
+
