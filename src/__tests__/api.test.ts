@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { beforeAll, describe, it, expect } from "vitest";
 import express from "express";
 import request from "supertest";
 import cors from "cors";
@@ -12,14 +12,16 @@ process.env.DB_PATH = testDbPath;
 // Clean up before tests
 if (fs.existsSync(testDbPath)) fs.unlinkSync(testDbPath);
 
-import router from "../routes";
-
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/api/v1", router);
 
 let projectId: string;
+
+beforeAll(async () => {
+  const { default: router } = await import("../routes");
+  app.use("/api/v1", router);
+});
 
 describe("API", () => {
   describe("Health", () => {
@@ -27,7 +29,7 @@ describe("API", () => {
       const res = await request(app).get("/api/v1/health");
       expect(res.status).toBe(200);
       expect(res.body.status).toBe("healthy");
-      expect(res.body.version).toBe("1.0.0");
+      expect(res.body.version).toBe("1.1.0");
       expect(res.body).toHaveProperty("uptime");
       expect(res.body).toHaveProperty("memory_count");
       expect(res.body).toHaveProperty("project_count");

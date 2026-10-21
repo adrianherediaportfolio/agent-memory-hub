@@ -5,11 +5,11 @@
 ![Node.js](https://img.shields.io/badge/Node.js-20.12%2B-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)
 ![License](https://img.shields.io/badge/License-Proprietary-red)
-![Version](https://img.shields.io/badge/Version-1.0.0-orange)
+![Version](https://img.shields.io/badge/Version-1.1.0-orange)
 
 ## Overview
 
-Agent Memory Hub is a lightweight REST API that provides **persistent memory** for AI coding agents that integrate with HTTP APIs. Instead of losing context between sessions, agents can store and retrieve:
+Agent Memory Hub provides **persistent memory** for AI coding agents through a REST API and a built-in MCP server. Any MCP-compatible client or HTTP API client can store and retrieve context across sessions:
 
 - **Architecture decisions** — Why you chose a specific pattern or technology
 - **Bug resolutions** — What caused a bug and how it was fixed
@@ -26,7 +26,7 @@ Agent Memory Hub is a lightweight REST API that provides **persistent memory** f
 - **Access Tracking** — Automatically tracks when memories are accessed and how often
 - **Recency Decay** — Recent memories score higher in search results
 - **Agent-Friendly Context Endpoint** — `/context/:project_id` returns formatted markdown perfect for LLM consumption
-- **Zero External Dependencies** — Runs fully offline with SQLite and built-in embeddings (no OpenAI API needed)
+- **No External APIs** — Runs offline with SQLite and built-in embeddings (no OpenAI API needed)
 - **Docker Ready** — One command deployment with persistent volumes
 
 ## Example
@@ -207,7 +207,56 @@ POST http://localhost:3000/api/v1/memories
 
 ### MCP (Model Context Protocol)
 
-There is no built-in MCP server yet. One is planned. For now, compatible clients can connect through external MCP integrations that use the REST API.
+Build the project before connecting an MCP client:
+
+```bash
+npm ci
+npm run build
+```
+
+#### Claude Code
+
+```bash
+claude mcp add agent-memory-hub -e DB_PATH=/abs/path/memory.db -- node /abs/path/dist/mcp.js
+```
+
+#### Cursor
+
+Add this to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "agent-memory-hub": {
+      "command": "node",
+      "args": ["/abs/path/dist/mcp.js"],
+      "env": {
+        "DB_PATH": "/abs/path/memory.db"
+      }
+    }
+  }
+}
+```
+
+#### Other MCP clients
+
+Use this `mcpServers` configuration:
+
+```json
+{
+  "mcpServers": {
+    "agent-memory-hub": {
+      "command": "node",
+      "args": ["/abs/path/dist/mcp.js"],
+      "env": {
+        "DB_PATH": "/abs/path/memory.db"
+      }
+    }
+  }
+}
+```
+
+The server provides `list_projects`, `create_project`, `remember`, `recall`, `get_context`, `update_memory`, and `forget`. The REST API and MCP server use the same SQLite database when configured with the same `DB_PATH`.
 
 ## Configuration
 
@@ -215,6 +264,7 @@ There is no built-in MCP server yet. One is planned. For now, compatible clients
 |---|---|---|
 | `PORT` | `3000` | Server port |
 | `DB_PATH` | `./memory.db` | SQLite database file path |
+| `API_KEY` | unset | Optional key required for REST routes other than `GET /health`. Send it as `Authorization: Bearer <key>` or `X-API-Key: <key>`. |
 
 ## Tech Stack
 

@@ -5,11 +5,11 @@
 ![Node.js](https://img.shields.io/badge/Node.js-20.12%2B-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)
 ![Licencia](https://img.shields.io/badge/Licencia-Propietaria-red)
-![Version](https://img.shields.io/badge/Version-1.0.0-orange)
+![Version](https://img.shields.io/badge/Version-1.1.0-orange)
 
 ## Descripcion General
 
-Agent Memory Hub es una API REST ligera que proporciona **memoria persistente** para agentes de IA de desarrollo que se integran con APIs HTTP. En lugar de perder el contexto entre sesiones, los agentes pueden almacenar y recuperar:
+Agent Memory Hub proporciona **memoria persistente** para agentes de IA mediante una API REST y un servidor MCP integrado. Cualquier cliente compatible con MCP o API HTTP puede almacenar y recuperar contexto entre sesiones:
 
 - **Decisiones de arquitectura** — Por que elegiste un patron o tecnologia especifica
 - **Resoluciones de bugs** — Que causo un bug y como se soluciono
@@ -26,7 +26,7 @@ Agent Memory Hub es una API REST ligera que proporciona **memoria persistente** 
 - **Seguimiento de Accesos** — Rastrea automaticamente cuando y cuantas veces se accede a cada memoria
 - **Decaimiento por Tiempo** — Las memorias recientes obtienen mayor puntuacion en busquedas
 - **Endpoint de Contexto para Agentes** — `/context/:project_id` devuelve markdown formateado perfecto para consumo de LLMs
-- **Sin Dependencias Externas** — Funciona completamente offline con SQLite y embeddings integrados (no necesita API de OpenAI)
+- **Sin APIs Externas** — Funciona offline con SQLite y embeddings integrados (no necesita API de OpenAI)
 - **Docker Ready** — Despliegue con un solo comando con volumenes persistentes
 
 ## Ejemplo
@@ -187,7 +187,64 @@ Accept: application/json
 
 ## MCP (Model Context Protocol)
 
-Agent Memory Hub todavía no incluye un servidor MCP integrado. Está previsto desarrollar uno. Por ahora, los clientes compatibles pueden conectarse mediante integraciones MCP externas que usen la API REST.
+Compila el proyecto antes de conectar un cliente MCP:
+
+```bash
+npm ci
+npm run build
+```
+
+### Claude Code
+
+```bash
+claude mcp add agent-memory-hub -e DB_PATH=/abs/path/memory.db -- node /abs/path/dist/mcp.js
+```
+
+### Cursor
+
+Añade esta configuración a `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "agent-memory-hub": {
+      "command": "node",
+      "args": ["/abs/path/dist/mcp.js"],
+      "env": {
+        "DB_PATH": "/abs/path/memory.db"
+      }
+    }
+  }
+}
+```
+
+### Otros clientes MCP
+
+Usa esta configuración `mcpServers`:
+
+```json
+{
+  "mcpServers": {
+    "agent-memory-hub": {
+      "command": "node",
+      "args": ["/abs/path/dist/mcp.js"],
+      "env": {
+        "DB_PATH": "/abs/path/memory.db"
+      }
+    }
+  }
+}
+```
+
+El servidor ofrece `list_projects`, `create_project`, `remember`, `recall`, `get_context`, `update_memory` y `forget`. La API REST y el servidor MCP comparten la base SQLite si usan el mismo `DB_PATH`.
+
+## Configuración
+
+| Variable | Valor predeterminado | Descripción |
+|---|---|---|
+| `PORT` | `3000` | Puerto del servidor |
+| `DB_PATH` | `./memory.db` | Ruta del archivo SQLite |
+| `API_KEY` | Sin definir | Clave opcional para las rutas REST, excepto `GET /health`. Envíala como `Authorization: Bearer <key>` o `X-API-Key: <key>`. |
 
 ## Stack Tecnologico
 

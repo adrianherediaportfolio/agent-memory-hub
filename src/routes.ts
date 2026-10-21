@@ -1,5 +1,7 @@
 import { Router, Request, Response } from "express";
+import { timingSafeEqual } from "node:crypto";
 import type { MemoryCategory } from "./types";
+import { formatProjectContext } from "./context";
 import {
   createProject,
   getProject,
@@ -30,10 +32,38 @@ router.get("/health", (_req: Request, res: Response) => {
   const stats = getStats();
   res.json({
     status: "healthy",
-    version: "1.0.0",
+    version: "1.1.0",
     uptime: process.uptime(),
     ...stats,
   });
+});
+
+router.use((req: Request, res: Response, next) => {
+  const apiKey = process.env.API_KEY;
+  if (apiKey === undefined || apiKey.trim() === "") {
+    next();
+    return;
+  }
+
+  const expected = Buffer.from(apiKey, "utf8");
+  const bearer = req
+    .get("authorization")
+    ?.match(/^Bearer\s+(.+)$/i)?.[1];
+  const candidates = [bearer, req.get("x-api-key")];
+  const authorized = candidates.some((candidate) => {
+    if (!candidate) return false;
+    const provided = Buffer.from(candidate, "utf8");
+    return (
+      provided.length === expected.length &&
+      timingSafeEqual(provided, expected)
+    );
+  });
+
+  if (!authorized) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  next();
 });
 
 // ── Projects ──
@@ -203,13 +233,7 @@ router.get("/context/:project_id", (req: Request, res: Response) => {
     limit,
   });
 
-  // Format for agent consumption
-  const contextLines = memories.map((m) => {
-    const tagStr = m.tags.length > 0 ? ` [${m.tags.join(", ")}]` : "";
-    return `## ${m.title} (${m.category}, importance: ${m.importance})${tagStr}\n${m.content}`;
-  });
-
-  const contextText = `# Project: ${project.name}\n${project.description ? `> ${project.description}\n` : ""}\n${contextLines.join("\n\n---\n\n")}`;
+  const contextText = formatProjectContext(project, memories);
 
   if (req.headers.accept === "application/json") {
     res.json({ project, memories, context: contextText });
