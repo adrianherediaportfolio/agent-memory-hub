@@ -40,7 +40,7 @@ router.get("/health", (_req: Request, res: Response) => {
 
 router.use((req: Request, res: Response, next) => {
   const apiKey = process.env.API_KEY;
-  if (apiKey === undefined) {
+  if (apiKey === undefined || apiKey.trim() === "") {
     next();
     return;
   }

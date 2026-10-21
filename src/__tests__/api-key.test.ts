@@ -53,6 +53,17 @@ describe("API key authentication", () => {
     expect(response.status).toBe(200);
   });
 
+  it.each(["", " \t "])(
+    "keeps routes open when API_KEY is %j",
+    async (apiKey) => {
+      process.env.API_KEY = apiKey;
+
+      const response = await request(app).get("/api/v1/projects");
+
+      expect(response.status).toBe(200);
+    }
+  );
+
   it("rejects requests with no key or an incorrect key", async () => {
     process.env.API_KEY = "expected-secret";
 
