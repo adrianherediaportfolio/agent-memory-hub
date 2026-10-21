@@ -2,14 +2,14 @@
 
 > Sistema self-hosted de memoria persistente para agentes de IA de desarrollo. Los agentes recuerdan el contexto entre sesiones: decisiones de arquitectura, patrones del proyecto, bugs resueltos.
 
-![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)
+![Node.js](https://img.shields.io/badge/Node.js-20.12%2B-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)
 ![Licencia](https://img.shields.io/badge/Licencia-Propietaria-red)
 ![Version](https://img.shields.io/badge/Version-1.0.0-orange)
 
 ## Descripcion General
 
-Agent Memory Hub es una API REST ligera que proporciona **memoria persistente** para agentes de IA de desarrollo como Cursor, GitHub Copilot, Claude Code y cualquier cliente compatible con MCP. En lugar de perder el contexto entre sesiones, los agentes pueden almacenar y recuperar:
+Agent Memory Hub es una API REST ligera que proporciona **memoria persistente** para agentes de IA de desarrollo que se integran con APIs HTTP. En lugar de perder el contexto entre sesiones, los agentes pueden almacenar y recuperar:
 
 - **Decisiones de arquitectura** — Por que elegiste un patron o tecnologia especifica
 - **Resoluciones de bugs** — Que causo un bug y como se soluciono
@@ -29,7 +29,7 @@ Agent Memory Hub es una API REST ligera que proporciona **memoria persistente** 
 - **Sin Dependencias Externas** — Funciona completamente offline con SQLite y embeddings integrados (no necesita API de OpenAI)
 - **Docker Ready** — Despliegue con un solo comando con volumenes persistentes
 
-## Capturas de Pantalla
+## Ejemplo
 
 
 ### Ejemplo de Busqueda (curl)
@@ -185,6 +185,10 @@ Accept: application/json
 | `config` | Notas de configuracion, setup de entorno |
 | `general` | Todo lo demas |
 
+## MCP (Model Context Protocol)
+
+Agent Memory Hub todavía no incluye un servidor MCP integrado. Está previsto desarrollar uno. Por ahora, los clientes compatibles pueden conectarse mediante integraciones MCP externas que usen la API REST.
+
 ## Stack Tecnologico
 
 - **Runtime**: Node.js 20.12+
@@ -203,4 +207,3 @@ Copyright (c) 2026 Adrian Heredia Jimenez. Todos los derechos reservados.
 Software propietario. El código es público para que puedas verlo, pero no puedes usarlo, copiarlo, modificarlo ni distribuirlo sin mi permiso por escrito. Consulta [LICENSE](LICENSE).
 
 ¿Quieres usarlo o comprar una licencia? Escríbeme a adrian.heredia.jimenez@gmail.com.
-

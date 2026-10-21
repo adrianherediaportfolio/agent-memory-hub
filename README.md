@@ -2,14 +2,14 @@
 
 > Self-hosted persistent memory system for AI coding agents. Agents remember context across sessions: architecture decisions, project patterns, resolved bugs.
 
-![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)
+![Node.js](https://img.shields.io/badge/Node.js-20.12%2B-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue)
 ![License](https://img.shields.io/badge/License-Proprietary-red)
 ![Version](https://img.shields.io/badge/Version-1.0.0-orange)
 
 ## Overview
 
-Agent Memory Hub is a lightweight REST API that provides **persistent memory** for AI coding agents like Cursor, GitHub Copilot, Claude Code, and any MCP-compatible client. Instead of losing context between sessions, agents can store and retrieve:
+Agent Memory Hub is a lightweight REST API that provides **persistent memory** for AI coding agents that integrate with HTTP APIs. Instead of losing context between sessions, agents can store and retrieve:
 
 - **Architecture decisions** — Why you chose a specific pattern or technology
 - **Bug resolutions** — What caused a bug and how it was fixed
@@ -29,7 +29,7 @@ Agent Memory Hub is a lightweight REST API that provides **persistent memory** f
 - **Zero External Dependencies** — Runs fully offline with SQLite and built-in embeddings (no OpenAI API needed)
 - **Docker Ready** — One command deployment with persistent volumes
 
-## Screenshots
+## Example
 
 
 ### Search Example (curl)
@@ -207,7 +207,7 @@ POST http://localhost:3000/api/v1/memories
 
 ### MCP (Model Context Protocol)
 
-Agent Memory Hub exposes a standard REST API that can be wrapped as an MCP server for any compatible client.
+There is no built-in MCP server yet. One is planned. For now, compatible clients can connect through external MCP integrations that use the REST API.
 
 ## Configuration
 
@@ -234,4 +234,3 @@ Copyright (c) 2026 Adrian Heredia Jimenez. All rights reserved.
 This is proprietary software. The code is public so you can see it, but you can't use, copy, modify or distribute it without my written permission. See [LICENSE](LICENSE).
 
 Want to use it or buy a license? Write to adrian.heredia.jimenez@gmail.com.
-
