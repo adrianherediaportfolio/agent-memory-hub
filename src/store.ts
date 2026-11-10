@@ -110,8 +110,8 @@ export function getMemory(id: string): Memory | null {
 
   // Update access tracking
   db.prepare(
-    `UPDATE memories SET accessed_at = datetime('now'), access_count = access_count + 1 WHERE id = ?`
-  ).run(id);
+    `UPDATE memories SET accessed_at = ?, access_count = access_count + 1 WHERE id = ?`
+  ).run(new Date().toISOString(), id);
 
   return deserializeMemory(row);
 }
@@ -275,10 +275,11 @@ export function searchMemories(params: {
 
   // Update access tracking for returned memories
   const updateStmt = db.prepare(
-    `UPDATE memories SET accessed_at = datetime('now'), access_count = access_count + 1 WHERE id = ?`
+    `UPDATE memories SET accessed_at = ?, access_count = access_count + 1 WHERE id = ?`
   );
+  const now = new Date().toISOString();
   for (const result of results) {
-    updateStmt.run(result.memory.id);
+    updateStmt.run(now, result.memory.id);
   }
 
   return results;

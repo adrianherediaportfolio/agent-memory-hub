@@ -46,6 +46,14 @@ function initializeSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_memories_importance ON memories(importance DESC);
     CREATE INDEX IF NOT EXISTS idx_memories_accessed ON memories(accessed_at DESC);
   `);
+
+  // Older versions wrote accessed_at with datetime('now'), which is UTC
+  // without a zone. Rewrite those rows as ISO 8601 so they parse as UTC.
+  db.exec(`
+    UPDATE memories
+    SET accessed_at = strftime('%Y-%m-%dT%H:%M:%fZ', accessed_at)
+    WHERE accessed_at NOT LIKE '%T%';
+  `);
 }
 
 export function closeDatabase(): void {
